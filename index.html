@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>미아방지 목걸이 미리보기 (3줄)</title>
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  .necklace {
+    position: relative;
+    display: inline-block;
+  }
+  .necklace img {
+    max-width: 400px;
+    height: auto;
+  }
+  .text-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: #333;
+    white-space: nowrap;
+  }
+  .line1 { top: 40%; }
+  .line2 { top: 52%; }
+  .line3 { top: 64%; }
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  input {
+    font-size: 16px;
+    padding: 4px;
+    width: 250px;
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h2>미아방지 목걸이 미리보기</h2>
+
+<p>1번째 줄 (이름, 최대 5글자)</p>
+<input type="text" id="line1Input" maxlength="5" placeholder="예: 홍길동">
+<div id="error1" class="error"></div>
+
+<p>2번째 줄 (숫자13자/한글8자/영어10자)</p>
+<input type="text" id="line2Input" placeholder="예: 01012345678">
+<div id="error2" class="error"></div>
+
+<p>3번째 줄 (숫자13자/한글8자/영어10자)</p>
+<input type="text" id="line3Input" placeholder="예: 2023.05.01">
+<div id="error3" class="error"></div>
+
+<div class="necklace">
+  <img src="necklace.jpg" alt="목걸이 이미지">
+  <div id="line1" class="text-line line1"></div>
+  <div id="line2" class="text-line line2"></div>
+  <div id="line3" class="text-line line3"></div>
+</div>
+
+<script>
+// 1번째 줄
+const line1Input = document.getElementById('line1Input');
+const line1 = document.getElementById('line1');
+const error1 = document.getElementById('error1');
+
+// 2번째 줄
+const line2Input = document.getElementById('line2Input');
+const line2 = document.getElementById('line2');
+const error2 = document.getElementById('error2');
+
+// 3번째 줄
+const line3Input = document.getElementById('line3Input');
+const line3 = document.getElementById('line3');
+const error3 = document.getElementById('error3');
+
+// 허용 문자
+const allowedChars = /^[a-zA-Z0-9가-힣 .]+$/; // 영문, 숫자, 한글, 점, 공백
+
+// 1번째 줄 입력 이벤트
+line1Input.addEventListener('input', () => {
+  const text = line1Input.value;
+  if (!allowedChars.test(text) && text !== "") {
+    error1.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
+    line1.textContent = "";
+  } else if (text.length > 5) {
+    error1.textContent = "⚠️ 최대 5자까지 입력 가능합니다.";
+    line1.textContent = "";
+  } else {
+    error1.textContent = "";
+    line1.textContent = text;
+  }
+});
+
+// 2번째 줄 입력 이벤트
+line2Input.addEventListener('input', () => {
+  const text = line2Input.value;
+  if (!allowedChars.test(text) && text !== "") {
+    error2.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
+    line2.textContent = "";
+  } else if (!validateLength(text)) {
+    error2.textContent = "⚠️ 글자 수 제한을 확인하세요.";
+    line2.textContent = "";
+  } else {
+    error2.textContent = "";
+    line2.textContent = text;
+  }
+});
+
+// 3번째 줄 입력 이벤트
+line3Input.addEventListener('input', () => {
+  const text = line3Input.value;
+  if (!allowedChars.test(text) && text !== "") {
+    error3.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
+    line3.textContent = "";
+  } else if (!validateLength(text)) {
+    error3.textContent = "⚠️ 글자 수 제한을 확인하세요.";
+    line3.textContent = "";
+  } else {
+    error3.textContent = "";
+    line3.textContent = text;
+  }
+});
+
+// 글자 수 제한 함수
+function validateLength(text) {
+  if (/^[0-9]+$/.test(text)) {
+    return text.length <= 13;
+  } else if (/^[가-힣 ]+$/.test(text)) {
+    return text.length <= 8;
+  } else if (/^[a-zA-Z ]+$/.test(text)) {
+    return text.length <= 10;
+  } else {
+    return false;
+  }
+}
+</script>
+
+</body>
+</html>
