@@ -44,15 +44,15 @@
 
 <h2>미아방지 목걸이 미리보기</h2>
 
-<p>1번째 줄 (이름, 최대 5글자)</p>
+<p>1번째 줄 (이름, 최대 5자)</p>
 <input type="text" id="line1Input" maxlength="5" placeholder="예: 홍길동">
 <div id="error1" class="error"></div>
 
-<p>2번째 줄 (숫자13자/한글8자/영어10자)</p>
-<input type="text" id="line2Input" placeholder="예: 01012345678">
+<p>2번째 줄 (숫자 13자 / 한글 8자 / 영어 10자)</p>
+<input type="text" id="line2Input" placeholder="예: 010-1234-5678">
 <div id="error2" class="error"></div>
 
-<p>3번째 줄 (숫자13자/한글8자/영어10자)</p>
+<p>3번째 줄 (숫자 13자 / 한글 8자 / 영어 10자)</p>
 <input type="text" id="line3Input" placeholder="예: 2023.05.01">
 <div id="error3" class="error"></div>
 
@@ -79,16 +79,10 @@ const line3Input = document.getElementById('line3Input');
 const line3 = document.getElementById('line3');
 const error3 = document.getElementById('error3');
 
-// 허용 문자
-const allowedChars = /^[a-zA-Z0-9가-힣 .]+$/; // 영문, 숫자, 한글, 점, 공백
-
 // 1번째 줄 입력 이벤트
 line1Input.addEventListener('input', () => {
   const text = line1Input.value;
-  if (!allowedChars.test(text) && text !== "") {
-    error1.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
-    line1.textContent = "";
-  } else if (text.length > 5) {
+  if (text.length > 5) {
     error1.textContent = "⚠️ 최대 5자까지 입력 가능합니다.";
     line1.textContent = "";
   } else {
@@ -100,10 +94,7 @@ line1Input.addEventListener('input', () => {
 // 2번째 줄 입력 이벤트
 line2Input.addEventListener('input', () => {
   const text = line2Input.value;
-  if (!allowedChars.test(text) && text !== "") {
-    error2.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
-    line2.textContent = "";
-  } else if (!validateLength(text)) {
+  if (!validateLength(text)) {
     error2.textContent = "⚠️ 글자 수 제한을 확인하세요.";
     line2.textContent = "";
   } else {
@@ -115,10 +106,7 @@ line2Input.addEventListener('input', () => {
 // 3번째 줄 입력 이벤트
 line3Input.addEventListener('input', () => {
   const text = line3Input.value;
-  if (!allowedChars.test(text) && text !== "") {
-    error3.textContent = "⚠️ 특수문자는 사용할 수 없습니다.";
-    line3.textContent = "";
-  } else if (!validateLength(text)) {
+  if (!validateLength(text)) {
     error3.textContent = "⚠️ 글자 수 제한을 확인하세요.";
     line3.textContent = "";
   } else {
@@ -129,14 +117,19 @@ line3Input.addEventListener('input', () => {
 
 // 글자 수 제한 함수
 function validateLength(text) {
-  if (/^[0-9]+$/.test(text)) {
-    return text.length <= 13;
-  } else if (/^[가-힣 ]+$/.test(text)) {
-    return text.length <= 8;
-  } else if (/^[a-zA-Z ]+$/.test(text)) {
-    return text.length <= 10;
+  const noSpaceText = text.replace(/\s/g, "");
+  const isOnlyNumbers = /^[0-9]+$/.test(noSpaceText);
+  const isOnlyHangul = /^[가-힣]+$/.test(noSpaceText);
+  const isOnlyEnglish = /^[a-zA-Z]+$/.test(noSpaceText);
+
+  if (isOnlyNumbers) {
+    return noSpaceText.length <= 13;
+  } else if (isOnlyHangul) {
+    return noSpaceText.length <= 8;
+  } else if (isOnlyEnglish) {
+    return noSpaceText.length <= 10;
   } else {
-    return false;
+    return true; // 특수문자 섞인 경우는 따로 제한 없이 통과
   }
 }
 </script>
