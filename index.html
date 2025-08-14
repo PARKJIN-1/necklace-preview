@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>미아방지 목걸이 미리보기 (3줄)</title>
+
+<!-- 각인 느낌 폰트 추가 -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
 <style>
   body {
     font-family: sans-serif;
@@ -17,21 +21,31 @@
     max-width: 400px;
     height: auto;
   }
+
   .text-line {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     font-size: 20px;
-    color: #333;
+    color: #000 !important; /* 완전 검정색 고정 */
     white-space: nowrap;
+    font-family: 'Orbitron', sans-serif; /* 각인 느낌 폰트 적용 */
+    text-shadow:
+      1px 1px 1px rgba(255, 255, 255, 0.3),
+     -1px -1px 1px rgba(0, 0, 0, 0.7); /* 각인 느낌 효과 */
+    font-weight: bold;
+    letter-spacing: 1px;
   }
+
   .line1 { top: 40%; }
   .line2 { top: 52%; }
   .line3 { top: 64%; }
+
   .error {
     color: red;
     font-weight: bold;
   }
+
   input {
     font-size: 16px;
     padding: 4px;
@@ -129,7 +143,7 @@ function validateLength(text) {
   } else if (isOnlyEnglish) {
     return noSpaceText.length <= 10;
   } else {
-    return true; // 특수문자 섞인 경우는 따로 제한 없이 통과
+    return true; // 특수문자 섞인 경우는 제한하지 않음
   }
 }
 </script>
